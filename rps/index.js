@@ -12,13 +12,13 @@ function pickComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
   let computerChoice;
   if (randomNumber === 0) {
-    computerChoice = 'Rock';
+    computerChoice = 'Rock 🪨';
   }
   if (randomNumber === 1) {
-    computerChoice = 'Paper';
+    computerChoice = 'Paper 📰';
   }
   if (randomNumber === 2) {
-    computerChoice = 'Scissors';
+    computerChoice = 'Scissors ✂️';
   }
   document.getElementById('computerChoiceDisplay').innerHTML = computerChoice;
   return computerChoice;
@@ -28,14 +28,14 @@ function displayResults(playerChoice, computerChoice) {
   const resultsDisplay = document.getElementById('resultsDisplay');
   console.log(playerChoice, computerChoice);
   if (playerChoice == computerChoice) {
-    resultsDisplay.innerHTML = 'Tie ⁉️';
+    resultsDisplay.innerHTML = 'Tie';
     return;
   }
 
-  const wins = { Rock: 'Scissors', Paper: 'Rock', Scissors: 'Paper' };
+  const wins = { 'Rock 🪨': 'Scissors ✂️', 'Paper 📰': 'Rock 🪨', 'Scissors ✂️': 'Paper 📰' };
   if (wins[playerChoice] == computerChoice) {
-    resultsDisplay.innerHTML = 'Player ✅ yippee';
+    resultsDisplay.innerHTML = 'Player ✅';
   } else {
-    resultsDisplay.innerHTML = 'Computer ❌ womp womp';
+    resultsDisplay.innerHTML = 'Computer ❌';
   }
 }
