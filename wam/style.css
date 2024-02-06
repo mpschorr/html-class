@@ -1,0 +1,31 @@
+#grid {
+    width: 600px;
+    height: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#grid.hidden {
+    height: 0;
+    width: 0;
+}
+
+.square {
+    border: solid 1px;
+}
+
+.mole {
+    /* background-color: #af4822; */
+    background-image: url('mole.png');
+    background-size: 100% 100%;
+}
+
+#gameOver {
+    color: red;
+    position: absolute;
+    font-size: 2rem;
+}
+
+.hidden {
+    visibility: hidden;
+}
