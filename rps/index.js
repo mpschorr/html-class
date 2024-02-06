@@ -4,24 +4,21 @@ function playGame(playerChoice) {
   displayResults(playerChoice, computerChoice);
 }
 
-function pickPlayerChoice(choice) {
-  document.getElementById('playerChoiceDisplay').innerHTML = choice;
-}
+// function pickPlayerChoice(choice) {
+//   document.getElementById('playerChoiceDisplay').innerHTML = choice;
+// }
 
 function pickComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
-  let computerChoice;
   if (randomNumber === 0) {
-    computerChoice = 'Rock 🪨';
+    return 'Rock';
   }
   if (randomNumber === 1) {
-    computerChoice = 'Paper 📰';
+    return 'Paper'
   }
   if (randomNumber === 2) {
-    computerChoice = 'Scissors ✂️';
+    return 'Scissors'
   }
-  document.getElementById('computerChoiceDisplay').innerHTML = computerChoice;
-  return computerChoice;
 }
 
 function displayResults(playerChoice, computerChoice) {
