@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 const bgColor = "#E2F7FF"
 const ballColor = "#61ccef"
 const paddleColor = '#4ebbdf';
+const brickColor = '#4ebbdf';
 
 let ballX = canvas.width / 2;
 let ballY = canvas.height - 40;
@@ -16,14 +17,6 @@ const paddleHeight = 15;
 let paddleX = canvas.width / 2 - paddleWidth / 2;
 let paddleY = canvas.height - paddleHeight - 4;
 
-// document.addEventListener('keydown', (ev) => {
-//     if (ev.key == 'ArrowRight' || ev.key == 'd') {
-//         paddleX += 20;
-//     } else if (ev.key == 'ArrowLeft' || ev.key == 'a') {
-//         paddleX -= 20;
-//     }
-// });
-
 document.addEventListener('mousemove', (ev) => {
     let newX = (ev.clientX - paddleWidth / 2) - 16;
     if (ev.clientX - paddleWidth / 2 - 20 < 0) newX = 4;
@@ -33,20 +26,6 @@ document.addEventListener('mousemove', (ev) => {
 
 function drawBall() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // setTimeout(() => {
-    //     ctx.fillStyle = bgColor;
-    //     ctx.beginPath();
-    //     ctx.arc(oldX, oldY, ballRadius + 1, 0, Math.PI * 2);
-    //     ctx.fill();
-    //     // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // }, 1000)
-
-    // ctx.globalAlpha = 0.1;
-    // ctx.fillStyle = bgColor;
-    // console.log(hexToRGB(bgColor, 32), ctx.fillStyle)
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // ctx.globalAlpha = 1.0;
 
     ctx.fillStyle = ballColor;
     ctx.beginPath();
@@ -58,6 +37,20 @@ function drawPaddle() {
     ctx.beginPath();
     ctx.fillStyle = paddleColor;
     ctx.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);
+}
+
+function drawBricks() {
+    const brickWidth = 70;
+    const brickHeight = 30;
+    let brickX = 10;
+    let brickY = 25;
+
+    for (let row = 0; row < 6; row++) {
+        ctx.beginPath();
+        ctx.fillStyle = brickColor;
+        ctx.fillRect(brickX, brickY, brickWidth, brickHeight);
+        brickX += brickWidth + 10;
+    }
 }
 
 function step() {
@@ -83,6 +76,7 @@ function step() {
 
     drawBall();
     drawPaddle();
+    drawBricks();
 }
 
 setInterval(step, 1 / 60 * 1000);
