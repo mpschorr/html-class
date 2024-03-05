@@ -12,6 +12,8 @@ let ballVelX = 3;
 let ballVelY = -3;
 let ballRadius = 10;
 
+const bricks = [];
+
 const paddleWidth = 150;
 const paddleHeight = 15;
 let paddleX = canvas.width / 2 - paddleWidth / 2;
@@ -43,13 +45,17 @@ function drawBricks() {
     const brickWidth = 70;
     const brickHeight = 30;
     let brickX = 10;
-    let brickY = 25;
+    let brickY = 30;
 
-    for (let row = 0; row < 6; row++) {
-        ctx.beginPath();
-        ctx.fillStyle = brickColor;
-        ctx.fillRect(brickX, brickY, brickWidth, brickHeight);
-        brickX += brickWidth + 10;
+    for (let row = 0; row < 3; row++) {
+        brickX = 10
+        for (let col = 0; col < 6; col++) {
+            // ctx.beginPath();
+            // ctx.fillStyle = brickColor;
+            // ctx.fillRect(brickX, brickY, brickWidth, brickHeight);
+            brickX += brickWidth + 10;
+        }
+        brickY += brickHeight + 10;
     }
 }
 
@@ -76,7 +82,7 @@ function step() {
 
     drawBall();
     drawPaddle();
-    drawBricks();
+    // drawBricks();
 }
 
 setInterval(step, 1 / 60 * 1000);
