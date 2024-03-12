@@ -42,14 +42,48 @@ function drawPaddle() {
 }
 
 function drawBricks() {
+    bricks.forEach(brick => {
+        if (!brick.physics(ballX, ballY)) return
+        brick.draw();
+    })
+}
+
+function spawnBricks() {
     const brickWidth = 70;
     const brickHeight = 30;
     let brickX = 10;
     let brickY = 30;
+    // const colors = ['#f7434b', '#f77c43', '#fccc3a']
+    const colors = [['#f7434b', '#b4141b'], ['#f77c43', '#c95018'], ['#fccc3a', '#c28c12']]
 
     for (let row = 0; row < 3; row++) {
         brickX = 10
         for (let col = 0; col < 6; col++) {
+            bricks.push({
+                x: brickX,
+                y: brickY,
+                fillColor: colors[row][0],
+                strokeColor: colors[row][1],
+                isVisible: true,
+                draw() {
+                    ctx.fillStyle = this.fillColor;
+                    ctx.fillRect(this.x, this.y, brickWidth, brickHeight);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = this.strokeColor;
+                    ctx.strokeRect(this.x, this.y, brickWidth, brickHeight);
+                },
+                physics(ballX, ballY) {
+                    if (
+                        ballX > this.x
+                        && ballX < this.x + this.width
+                        && ballY > this.y
+                        && ballY < this.y + this.height
+                    ) {
+                        this.isVisible = false;
+                    }
+                    return this.isVisible;
+                }
+            })
             // ctx.beginPath();
             // ctx.fillStyle = brickColor;
             // ctx.fillRect(brickX, brickY, brickWidth, brickHeight);
@@ -82,7 +116,9 @@ function step() {
 
     drawBall();
     drawPaddle();
-    // drawBricks();
+    drawBricks();
 }
+
+spawnBricks();
 
 setInterval(step, 1 / 60 * 1000);
