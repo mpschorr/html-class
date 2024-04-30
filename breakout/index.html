@@ -6,10 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        @font-face {
+            font-family: 'Poppins';
+            font-weight: 400;
+            src: url('assets/Poppins-Regular.ttf')
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            font-weight: 700;
+            src: url('assets/Poppins-Bold.ttf')
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            font-weight: 900;
+            src: url('assets/Poppins-Black.ttf')
+        }
+
+        * {
+            font-family: 'Poppins';
+            font-weight: 500;
+        }
+
         canvas {
             background-color: rgb(226, 247, 255);
             border: solid 3px rgb(125, 199, 223);
             border-radius: 5px;
+        }
+
+        #start {
+            position: absolute;
+            left: 225px;
+            top: 150px;
         }
     </style>
     <script src="color.js"></script>
@@ -17,7 +46,10 @@
 
 <body>
     <canvas id="breakoutCanvas" width="500px" height="300px"></canvas>
+    <button id="start">Start Game</button>
     <script src="script.js"></script>
+
+    <!-- <h1>Score: 0</h1> -->
 </body>
 
 </html>

@@ -1,10 +1,21 @@
 const canvas = document.getElementById('breakoutCanvas');
 const ctx = canvas.getContext('2d');
+const startButton = document.getElementById('start');
+
+let score = 0;
+let isGameOver;w
+
+let frameInterval;
 
 const bgColor = "#E2F7FF"
 const ballColor = "#61ccef"
 const paddleColor = '#4ebbdf';
 const brickColor = '#4ebbdf';
+const textColor = '#1ca0cc';
+const gameOverColor = '#f7434b';
+const gameOverColorStroke = '#b4141b';
+
+const gameOverAudio = new Audio('./assets/boowomp.wav');
 
 let ballX = canvas.width / 2;
 let ballY = canvas.height - 40;
@@ -12,7 +23,7 @@ let ballVelX = 3;
 let ballVelY = -3;
 let ballRadius = 10;
 
-const bricks = [];
+let bricks;
 
 const paddleWidth = 150;
 const paddleHeight = 15;
@@ -43,12 +54,45 @@ function drawPaddle() {
 
 function drawBricks() {
     bricks.forEach(brick => {
-        if (!brick.physics(ballX, ballY)) return
+        if (brick.isCollision(ballX, ballY)) {
+            brick.isVisible = false;
+            ballVelY *= -1;
+            score++;
+        }
         brick.draw();
     })
 }
 
+function drawScore() {
+    ctx.font = 'bold 16px Poppins';
+    ctx.fillStyle = textColor;
+    // ctx.fillText(`Score: ${score}`, 8, 20);
+    ctx.fillText("Score: " + score, 8, 20);
+}
+
+function endGame() {
+    clearInterval(frameInterval);
+    setTimeout(() => {
+        ctx.font = 'bold 56px Poppins'
+        ctx.textAlign = 'center';
+        // shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.16)';
+        ctx.fillText("GAME OVER!!!!!", canvas.width / 2 + 4, canvas.height / 2 + 4)
+        // ctx.fillTe
+        // fill
+        ctx.fillStyle = gameOverColor;
+        ctx.fillText("GAME OVER!!!!!", canvas.width / 2, canvas.height / 2)
+        // stroke
+        ctx.strokeStyle = gameOverColorStroke;
+        ctx.strokeWeight = 10;
+        ctx.strokeText("GAME OVER!!!!!", canvas.width / 2, canvas.height / 2)
+        console.log('done :3')
+    }, 100)
+
+};
+
 function spawnBricks() {
+    bricks = [];
     const brickWidth = 70;
     const brickHeight = 30;
     let brickX = 10;
@@ -66,22 +110,21 @@ function spawnBricks() {
                 strokeColor: colors[row][1],
                 isVisible: true,
                 draw() {
+                    if (!this.isVisible) return;
                     ctx.fillStyle = this.fillColor;
                     ctx.fillRect(this.x, this.y, brickWidth, brickHeight);
                     ctx.lineWidth = 2;
                     ctx.strokeStyle = this.strokeColor;
                     ctx.strokeRect(this.x, this.y, brickWidth, brickHeight);
                 },
-                physics(ballX, ballY) {
-                    if (
-                        ballX > this.x
-                        && ballX < this.x + this.width
-                        && ballY > this.y
-                        && ballY < this.y + this.height
-                    ) {
-                        this.isVisible = false;
-                    }
-                    return this.isVisible;
+                isCollision(ballX, ballY) {
+                    return (
+                        this.isVisible
+                        && this.x < ballX
+                        && this.x + brickWidth > ballX
+                        && this.y < ballY
+                        && this.y + brickHeight > ballY
+                    )
                 }
             })
             // ctx.beginPath();
@@ -112,13 +155,31 @@ function step() {
         && ballX < paddleX + paddleWidth
     ) {
         ballVelY *= -1
+        ballVelX *= Math.random() / 5 + 0.9
     }
 
+    if (ballY > canvas.height) {
+        // endGame();
+        isGameOver = true;
+    }
+
+    console.log('drawing :3')
     drawBall();
     drawPaddle();
     drawBricks();
+    drawScore();
+    if (isGameOver) {
+        endGame();
+    }
+    if (score % 18 === 0) {
+        spawnBricks();
+    }
 }
 
-spawnBricks();
+startButton.addEventListener('click', () => {
+    startButton.style.display = 'none';
+    spawnBricks();
+    frameInterval = setInterval(step, 1 / 60 * 1000);
 
-setInterval(step, 1 / 60 * 1000);
+    gameOverAudio.play();
+})
