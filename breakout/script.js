@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 const startButton = document.getElementById('start');
 
 let score = 0;
-let isGameOver;w
+let isGameOver;
 
 let frameInterval;
 
