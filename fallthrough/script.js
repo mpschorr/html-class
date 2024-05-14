@@ -12,6 +12,7 @@ let ballX = canvas.width / 2;
 let ballY = canvas.height / 2;
 // let ballAccel = 1.01;
 let ballVX = 0;
+let ballVY = 0;
 
 // Spawn a line
 function spawnLine() {
@@ -37,6 +38,12 @@ function spawnLine() {
       this.gap.draw.bind(this)();
       this.y -= speed;
     },
+
+    isCollided() {
+      const isOnTop = Math.abs(this.y - ballY) < 12;
+      const overGap = ballX > this.gap.x && ballX < this.gap.x + 50;
+      return isOnTop && !overGap;
+    },
   });
 }
 
@@ -48,7 +55,7 @@ function drawLines() {
 
 // Check if line is far enough away to spawn a new one
 function addLines() {
-  if (lines[lines.length - 1].y < canvas.height - 100) {
+  if (lines[lines.length - 1].y < canvas.height - 150) {
     spawnLine();
   }
 }
@@ -67,8 +74,6 @@ function drawBall() {
   ctx.fillStyle = COLOR_BALL;
   ctx.fill();
 }
-
-// window.
 
 // Key input
 window.onkeydown = (e) => {
@@ -89,12 +94,29 @@ window.onkeyup = (e) => {
   }
 };
 
+function handleBallCollision() {
+  let collided = false;
+  lines.forEach((line) => {
+    if (line.isCollided()) {
+      collided = true;
+    }
+  });
+
+  if (collided) {
+    ballVY = -speed;
+  } else {
+    ballVY = speed;
+  }
+}
+
 // Animate frame
 function animate() {
   // Movement
   ballX += ballVX;
   if (ballX < 0) ballX = canvas.width;
   if (ballX > canvas.width) ballX = 0;
+  ballY += ballVY;
+  handleBallCollision();
   // Clear canvas & draw
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawLines();
